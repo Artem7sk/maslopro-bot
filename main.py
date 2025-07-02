@@ -83,7 +83,8 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     from dotenv import load_dotenv
     load_dotenv()
-    app = Application.builder().token(os.getenv("7761025348:AAHqSDrT5zjFY2r-qTOtYazJlLICK4jlKGQ")).build()
+  #   app = Application.builder().token(os.getenv("7761025348:AAHqSDrT5zjFY2r-qTOtYazJlLICK4jlKGQ")).build()
+app = Application.builder().token("7761025348:AAHqSDrT5zjFY2r-qTOtYazJlLICK4jlKGQ").build()
 
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("history", history))
