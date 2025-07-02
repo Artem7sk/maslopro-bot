@@ -166,7 +166,7 @@ def main():
     )
 
     service_conv = ConversationHandler(
-        entry_points=[CommandHandler("запись", zapis)],
+        entry_points=[CommandHandler("zapis", zapis)],
         states={
             CHOOSE_CAR: [MessageHandler(filters.TEXT & ~filters.COMMAND, choose_car)],
             DATE: [MessageHandler(filters.TEXT & ~filters.COMMAND, date)],
