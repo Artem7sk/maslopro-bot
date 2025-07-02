@@ -1,4 +1,5 @@
 import os
+from database import init_db
 from dotenv import load_dotenv
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import (
