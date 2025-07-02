@@ -3,10 +3,8 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 from db import *
 import os
 
-# 🔐 Укажи свой Telegram ID
-ADMIN_ID = 123456789
+ADMIN_ID = 292401681  # <-- замени на свой Telegram ID
 
-# Этапы диалога
 (MARKA, MODEL, YEAR, ENGINE, TRANSMISSION, MILEAGE, CHOOSE_CAR, DATE, OIL, LITERS,
  OIL_FILTER, AIR_FILTER, CABIN_FILTER, GREASING, COMMENT) = range(15)
 
@@ -51,7 +49,6 @@ async def mileage(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = get_user_id(user.id)
     add_car(uid, user_data['marka'], user_data['model'], user_data['year'],
             user_data['engine'], user_data['transmission'], user_data['mileage'])
-
     await update.message.reply_text("✅ Автомобиль добавлен! Чтобы записаться на обслуживание, введи /запись")
     return ConversationHandler.END
 
@@ -85,7 +82,7 @@ async def oil(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def liters(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data['liters'] = update.message.text
-    await update.message.reply_text("Масляный фильтр (название или '-'):") 
+    await update.message.reply_text("Масляный фильтр (название или '-'):")
     return OIL_FILTER
 
 async def oil_filter(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -124,7 +121,7 @@ async def comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("✅ Запись сохранена!")
     return ConversationHandler.END
 
-# Команда /история
+# История обслуживания
 async def history(update: Update, context: ContextTypes.DEFAULT_TYPE):
     uid = get_user_id(update.effective_user.id)
     history = get_service_history(uid)
@@ -137,7 +134,7 @@ async def history(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg += f"{date} — {marka} {model} {year}, масло: {oil} ({liters}л), фильтры: {oil_f}/{air_f}/{cabin_f}, шприцовка: {'да' if grease else 'нет'}\nКомментарий: {comm}\n\n"
     await update.message.reply_text(msg)
 
-# Команда /admin
+# Админ-панель
 async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
         await update.message.reply_text("⛔ Нет доступа.")
@@ -152,7 +149,7 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
         msg += f"{date} — {name} ({marka} {model} {year}), масло: {oil} ({liters}л), фильтры: {oil_f}/{air_f}/{cabin_f}, шприцовка: {'да' if grease else 'нет'}\nКомментарий: {comm}\n\n"
     await update.message.reply_text(msg)
 
-# Старт
+# Запуск
 def main():
     init_db()
     app = Application.builder().token(os.getenv("BOT_TOKEN")).build()
@@ -190,6 +187,7 @@ def main():
     app.add_handler(service_conv)
     app.add_handler(CommandHandler("история", history))
     app.add_handler(CommandHandler("admin", admin))
+
     app.run_polling()
 
 if __name__ == "__main__":
