@@ -147,7 +147,7 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     for r in recs:
         txt += f"{r[4]} — {r[0]} {r[1]} {r[2]}, пользователь: {r[0]}, масло: {r[5]}, {r[6]}л, фильтры: {r[7]}/{r[8]}/{r[9]}, шприцовка: {'да' if r[10] else 'нет'}\nКомментарий: {r[11]}\n\n"
     await update.message.reply_text(txt[:4000])
-
+init_db()
 def main():
     init_db()
     app = Application.builder().token(BOT_TOKEN).build()
